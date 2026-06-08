@@ -4,11 +4,6 @@ Short notes for getting `vla.cpp` to compile and link on macOS. The Metal
 backend is auto-detected by the vendored `llama.cpp`/`ggml` and needs no special
 CMake flag.
 
-> **Status:** macOS/Metal is **build-and-link validated only**. All VLA inference
-> paths in this repo (parity tests, LIBERO/SIMPLER sweeps, latency numbers) are
-> CUDA-validated — see `CLAUDE.md`/`NOTES.md`. Treat Metal as a way to compile
-> and develop on a Mac, not as a benchmarked inference target.
-
 ## Prerequisites
 
 ```bash
@@ -29,3 +24,36 @@ bash patches/patch.sh
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j$(sysctl -n hw.ncpu)
 ```
+
+## GPU offload
+
+The VLA core selects its compute backend at load time. On macOS it picks Metal
+(`ggml_backend_metal_init`); the CLIP/vision encoder mirrors that choice, so both
+the transformer and the vision tower run on the GPU. Confirm it from the startup
+banner:
+
+```
+vla: backend = Metal
+clip_ctx: CLIP using GPU backend
+```
+
+If you instead see `vla: backend = CPU (4 threads)` / `CLIP using CPU backend`,
+the build didn't pick up Metal — rebuild from a clean `build/` and check
+`GGML_METAL` is `ON` in the CMake cache.
+
+> Single-backend, no per-op CPU fallback: the core uses one backend + `gallocr`,
+> not a scheduler. SmolVLA's ops are all Metal-supported; an arch that hits an
+> unimplemented op would assert at predict time rather than silently fall back.
+
+## Results
+
+SmolVLA (libero, `mmproj` + 878 MiB BF16 weights), **Apple M4**, steady state:
+
+| Stage        | CPU (before) | Metal GPU (after) |
+|--------------|-------------:|------------------:|
+| vision       |   22,367 ms  |          ~178 ms  |
+| inference    |   12,878 ms  |          ~144 ms  |
+| **total/req**|  ~35,250 ms  |         **~324 ms** |
+
+≈ **108× faster** end-to-end. First request is ~671 ms (Metal pipeline warmup),
+then it settles to ~321–328 ms/req. Raw server log:
