@@ -64,6 +64,10 @@ if(GGML_CUDA)
     target_include_directories(vla_core PUBLIC ${CUDAToolkit_INCLUDE_DIRS})
 endif()
 
+if(GGML_METAL AND NOT GGML_CUDA)
+    target_compile_definitions(vla_core PUBLIC GGML_USE_METAL)
+endif()
+
 add_library(vlm_core
     src/vlm/engine.cpp
 )
@@ -106,7 +110,7 @@ target_include_directories(vla-server PRIVATE
 )
 target_link_libraries(vla-server PRIVATE
     vla_core
-    ${Protobuf_LIBRARIES}
+    protobuf::libprotobuf
     PkgConfig::ZeroMQ
 )
 
@@ -134,6 +138,6 @@ target_include_directories(vlm-server PRIVATE
 )
 target_link_libraries(vlm-server PRIVATE
     vlm_core
-    ${Protobuf_LIBRARIES}
+    protobuf::libprotobuf
     PkgConfig::ZeroMQ
 )
