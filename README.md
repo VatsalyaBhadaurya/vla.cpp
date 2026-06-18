@@ -10,7 +10,7 @@
 
 An efficient C++ inference engine for **Vision-Language-Action (VLA) models**, built on top of [`llama.cpp`](https://github.com/ggml-org/llama.cpp).
 It brings today's open VLA policies - SmolVLA, π0, BitVLA, Evo-1, and GR00T N1.5/1.6/1.7 - under one runtime, packaging each as a single self-contained GGUF that needs no Python or PyTorch at inference time.
-The binary can drive robots across CPU or CUDA, scaling from consumer GPUs down to the Jetson-class boards.
+The binary can drive robots across **CPU**, **Apple Silicon**, or **CUDA**, scaling from consumer GPUs down to the Jetson-class boards.
 
 ## Build the server
 
@@ -64,6 +64,8 @@ If system cannot detect CUDA, declare CUDA explicitly in environment variables
 export PATH=/usr/local/cuda/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 ```
+
+On Apple Silicon (e.g. Mac Mini M4), Metal is enabled by default and runs both the transformer and vision tower on the GPU. See [docs/backend/metal.md](docs/backend/metal.md) for building `vla.cpp` on macOS.
 
 ## Install simulators
 
@@ -205,33 +207,24 @@ Columns report `client/call (ms)` and `Peak RAM (MiB)` for each hardware target.
 
 ## Roadmap
 
-Work in progress and planned directions (🚧 in progress · ⬜ planned · ✅ done):
+Support matrix of models (rows) against platforms (columns). Legend: `Y` =
+supported (released and benchmarked), `~` = in progress, `-` = planned.
 
-**Platforms**
+| Model | CPU (x86-64 / ARM) | CUDA | Metal | OpenVINO | Hexagon |
+|---|:--:|:--:|:--:|:--:|:--:|
+| SmolVLA     | Y | Y | Y | - | - |
+| π0          | Y | Y | Y | - | - |
+| BitVLA      | Y | Y | ~ | - | - |
+| Evo-1       | Y | Y | ~ | - | - |
+| GR00T N1.5  | Y | Y | ~ | - | - |
+| GR00T N1.6  | Y | Y | ~ | - | - |
+| GR00T N1.7  | Y | Y | Y | - | - |
+| VLA-Adapter | - | - | - | - | - |
+| OpenVLA-OFT | - | - | - | - | - |
+| π0.5        | - | - | - | - | - |
 
-- [x] ✅ CPU (x86-64 / ARM)
-- [x] ✅ CUDA (consumer GPUs → Jetson-class boards)
-- [ ] 🚧 Apple Silicon
-- [ ] ⬜ Qualcomm Hexagon
-- [ ] ⬜ OpenVINO
-- [ ] ⬜ …and more
-
-**Models**
-
-- [x] ✅ SmolVLA
-- [x] ✅ π0
-- [x] ✅ BitVLA
-- [x] ✅ Evo-1
-- [x] ✅ GR00T N1.5 / N1.6 / N1.7
-- [ ] 🚧 VLA-Adapter
-- [ ] ⬜ Qwen-VLA
-- [ ] ⬜ …and more
-
-**Engineering**
-
-- [ ] 🚧 Optimize models
-- [ ] 🚧 Refactor codebase
-- [ ] ⬜ Implement quantization profile
+Looking ahead, we will support more models, more platforms, and continue to
+optimize the framework.
 
 ## Contributors
 
