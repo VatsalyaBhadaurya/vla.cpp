@@ -221,7 +221,7 @@ std::unique_ptr<ModelArchBase> openvla_oft_create(const std::string& mmproj_path
                                                   const std::string& ckpt_path,
                                                   const std::string& ) {
     if (!mmproj_path.empty())
-        std::printf("vla(openvla_oft): note — mmproj '%s' ignored (vision baked into combined GGUF)\n", mmproj_path.c_str());
+        std::printf("vla(openvla_oft): note - mmproj '%s' ignored (vision baked into combined GGUF)\n", mmproj_path.c_str());
     auto m = std::make_unique<OpenVlaOftModelArch>();
     m->mt = std::getenv("VLA_OPENVLA_OFT_F32_WEIGHTS") ? GGML_TYPE_F32 : GGML_TYPE_BF16;
 
@@ -329,7 +329,7 @@ std::unique_ptr<ModelArchBase> openvla_oft_create(const std::string& mmproj_path
         if(bytes.empty()||bytes.size()!=ggml_nbytes(t)){ std::fprintf(stderr,"vla(openvla_oft): load %s (%zu vs %zu)\n",ggml_get_name(t),bytes.size(),ggml_nbytes(t)); return nullptr; }
         ggml_backend_tensor_set(t,bytes.data(),0,bytes.size());
     }
-    std::printf("vla(openvla_oft): weights resident %.2f GiB (%s) — DINOv2+SigLIP towers + Llama-2-7B + MLPResNet L1 head\n",
+    std::printf("vla(openvla_oft): weights resident %.2f GiB (%s) - DINOv2+SigLIP towers + Llama-2-7B + MLPResNet L1 head\n",
                 ggml_backend_buffer_get_size(m->weight_buf)/(1024.0*1024.0*1024.0), m->mt==GGML_TYPE_F32?"F32":"BF16");
 
     m->cfg.n_suffix = m->chunk; m->cfg.max_action_dim = m->action_dim;

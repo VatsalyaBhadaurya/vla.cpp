@@ -38,7 +38,7 @@ clip_ctx: CLIP using GPU backend
 ```
 
 If you instead see `vla: backend = CPU (4 threads)` / `CLIP using CPU backend`,
-the build didn't pick up Metal — rebuild from a clean `build/` and check
+the build didn't pick up Metal - rebuild from a clean `build/` and check
 `GGML_METAL` is `ON` in the CMake cache.
 
 > Single-backend, no per-op CPU fallback: the core uses one backend + `gallocr`,

@@ -428,9 +428,9 @@ bool load_stats(gguf_reader & g, Pi05ModelArch & m) {
     m.action_std .assign(cfg.real_action_dim, 1.f);
     auto read1d = [&](const char * name, std::vector<float> & dst) {
         const ggml_tensor * t = g.meta(name);
-        if (!t) { std::printf("vla(pi05): %s missing — identity\n", name); return; }
-        if (t->ne[0] != (int64_t) dst.size()) { std::printf("vla(pi05): %s dim mismatch — identity\n", name); return; }
-        if (!g.read_raw(name, dst.data())) std::printf("vla(pi05): %s read failed — identity\n", name);
+        if (!t) { std::printf("vla(pi05): %s missing - identity\n", name); return; }
+        if (t->ne[0] != (int64_t) dst.size()) { std::printf("vla(pi05): %s dim mismatch - identity\n", name); return; }
+        if (!g.read_raw(name, dst.data())) std::printf("vla(pi05): %s read failed - identity\n", name);
     };
     read1d("state_mean",  m.state_mean);
     read1d("state_std",   m.state_std);

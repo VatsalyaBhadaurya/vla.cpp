@@ -1,4 +1,4 @@
-# Multimodal chat example — SmolVLM2-500M-Instruct
+# Multimodal chat example - SmolVLM2-500M-Instruct
 
 A minimal **streaming image+text chat** client for `vlm-server`, the llama.cpp +
 libmtmd chat runtime (`src/vlm/engine.cpp`) behind a ZMQ daemon. Send text and
@@ -23,12 +23,12 @@ Both GGUFs come straight from `HuggingFaceTB/SmolVLM2-500M-Instruct` via
 llama.cpp's own `convert_hf_to_gguf.py` (no custom converter): one pass for the
 text LM, one for the vision tower (mmproj). Conversion is CPU-only.
 
-Dependencies — system `python3` already had `torch` / `transformers` /
+Dependencies - system `python3` already had `torch` / `transformers` /
 `safetensors`; the only addition:
 
 ```bash
 pip install --user sentencepiece     # used by convert_hf_to_gguf's tokenizer step
-# the `gguf` module is NOT pip-installed — it's taken from the vendored gguf-py
+# the `gguf` module is NOT pip-installed - it's taken from the vendored gguf-py
 # via PYTHONPATH (below), so it matches our llama.cpp snapshot exactly.
 ```
 
@@ -74,7 +74,7 @@ rope θ 1e5) and bakes the SmolVLM2 chat template into the GGUF KV store; the
 > weights** (same `model.safetensors` hash, config and chat template), and
 > `ggml-org/SmolVLM2-500M-Video-Instruct-GGUF` is a pre-converted equivalent
 > (ships f16 + Q8_0 for both the LM and the mmproj). Either is a drop-in
-> replacement for this whole step — just take the mmproj from the same repo. We
+> replacement for this whole step - just take the mmproj from the same repo. We
 > convert our own only to keep the mmproj version-matched to the vendored
 > `clip`/`mtmd` we link against.
 
@@ -82,7 +82,7 @@ rope θ 1e5) and bakes the SmolVLM2 chat template into the GGUF KV store; the
 
 ## 2. Start the server
 
-`vlm-server` positional args are `<mmproj.gguf> <lm.gguf>` (use `build-cuda` —
+`vlm-server` positional args are `<mmproj.gguf> <lm.gguf>` (use `build-cuda` -
 the CPU build is ~100× slower).
 
 ```bash
@@ -104,7 +104,7 @@ regenerate the binding next to the client:
 protoc --proto_path=src/serving --python_out=examples/chat src/serving/vlm.proto
 ```
 
-**Interactive REPL** (streams tokens live; stateless multi-turn — the client
+**Interactive REPL** (streams tokens live; stateless multi-turn - the client
 resends the full history each turn):
 
 ```bash
@@ -134,7 +134,7 @@ on the text history rather than re-seeing prior images.
 ## Other models
 
 The server and client are **model-agnostic**: any VLM the vendored llama.cpp +
-libmtmd supports works by swapping the two GGUFs — no rebuild, no code change.
+libmtmd supports works by swapping the two GGUFs - no rebuild, no code change.
 Verified with **Qwen3-VL-2B-Instruct** via ggml-org's pre-built Q8_0 GGUF:
 
 ```bash

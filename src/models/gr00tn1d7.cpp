@@ -527,7 +527,7 @@ std::unique_ptr<ModelArchBase> gr00t_n1_7_create(const std::string& mmproj_path,
                                                  const std::string& ckpt_path,
                                                  const std::string& ) {
     if (!mmproj_path.empty())
-        std::printf("vla(gr00tn1d7): note — mmproj '%s' is ignored (the vision tower is bundled in the combined GGUF)\n", mmproj_path.c_str());
+        std::printf("vla(gr00tn1d7): note - mmproj '%s' is ignored (the vision tower is bundled in the combined GGUF)\n", mmproj_path.c_str());
 
     auto m = std::make_unique<Gr00tN1d7ModelArch>();
     m->gguf_path   = ckpt_path;
@@ -701,8 +701,8 @@ std::unique_ptr<ModelArchBase> gr00t_n1_7_create(const std::string& mmproj_path,
         }
         ggml_backend_tensor_set(fs.dst, buf.data(), 0, buf.size());
     }
-    if (fuse) std::printf("vla(gr00tn1d7): QKV-fused DiT (self Wqkv / cross Wkv) — %zu fused tensors\n", fused.size());
-    std::printf("vla(gr00tn1d7): weights resident in %.2f GiB (%s) — incl. Qwen3-VL vision tower + deepstack + vl_self_attention; embodiment id %lld\n",
+    if (fuse) std::printf("vla(gr00tn1d7): QKV-fused DiT (self Wqkv / cross Wkv) - %zu fused tensors\n", fused.size());
+    std::printf("vla(gr00tn1d7): weights resident in %.2f GiB (%s) - incl. Qwen3-VL vision tower + deepstack + vl_self_attention; embodiment id %lld\n",
                 ggml_backend_buffer_get_size(m->weight_buf) / (1024.0 * 1024.0 * 1024.0), m->matmul_type == GGML_TYPE_F32 ? "F32" : "BF16", (long long) m->embodiment_id);
     if (!m->build_caches()) { std::fprintf(stderr, "vla(gr00tn1d7): build_caches failed\n"); return nullptr; }
     return m;

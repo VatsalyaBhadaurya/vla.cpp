@@ -54,8 +54,8 @@ cmake --build build -j$(nproc)
 cmake -B build \
     -DGGML_CUDA=ON \
     -DGGML_CUDA_GRAPHS=ON \
-    -DCMAKE_CUDA_ARCHITECTURES=$CUDA_ARCHITECTURE \
-    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_CUDA_ARCHITECTURES=$CUDA_ARCHITECTURE
 cmake --build build -j$(nproc)
 ```
 
@@ -120,9 +120,9 @@ With `vla-server` already running:
 ```bash
 source eval/sim/libero/libero_uv/.venv/bin/activate
 python eval/client/run_sim_client_direct.py \
-    --arch "$VLA_ARCH" \
     --task libero_object --task-id 0 --n-episodes 1 \
-    --output-dir /tmp/libero_outputs
+    --output-dir /tmp/libero_outputs \
+    --arch "$VLA_ARCH"
 ```
 
 Note:
@@ -147,8 +147,8 @@ source eval/sim/simpler/simpler_uv/.venv/bin/activate
 python eval/client/run_simpler_client_direct.py \
     --arch gr00t_n1_6 \
     --task-id oxe_widowx/widowx_spoon_on_towel --n-episodes 1 \
-    --stats-json "$VLA_STATS_JSON" \
-    --embodiment oxe_widowx --image-size 252
+    --embodiment oxe_widowx --image-size 252 \
+    --stats-json "$VLA_STATS_JSON"
 ```
 
 `$VLA_STATS_JSON` is the `statistics.json` shipped beside the bridge GGUF. The default 224-px GGUF mis-localises on WidowX (≈20% success) - the 252-px build is required.
@@ -243,13 +243,12 @@ Licensed under the [Apache License, Version 2.0](LICENSE.md).
 Supported VLA models:
 
 - [SmolVLA](https://huggingface.co/lerobot/smolvla_base) - Hugging Face LeRobot team.
-- [π0](https://github.com/Physical-Intelligence/openpi) - Physical Intelligence
-- [π0.5](https://github.com/Physical-Intelligence/openpi) - Physical Intelligence (PaliGemma + Gemma-300m adaRMS action expert; state-in-prompt flow-matching).
-- [BitVLA](https://github.com/ustcwhy/BitVLA) - Hongyu Wang et al. (1.58-bit ternary VLA).
-- [Evo-1](https://github.com/MINT-SJTU/Evo-1/tree/main) - MINT-SJTU (InternVL3 + cross-attention flow-matching head).
-- [VLA-Adapter](https://github.com/OpenHelix-Team/VLA-Adapter) - OpenHelix (Qwen2.5-0.5B + Bridge-Attention policy head).
-- [OpenVLA-OFT](https://github.com/moojink/openvla-oft) - Moo Jin Kim et al. (Llama-2-7B + parallel MLPResNet L1 action head).
-- [GR00T N1.x](https://github.com/NVIDIA/Isaac-GR00T) - NVIDIA Isaac (Eagle / Cosmos-Reason VLM + AlternateVLDiT action head; N1.5, N1.6, N1.7).
+- [π0,π0.5](https://github.com/Physical-Intelligence/openpi) - Physical Intelligence.
+- [BitVLA](https://github.com/ustcwhy/BitVLA) - Hongyu Wang et al.
+- [Evo-1](https://github.com/MINT-SJTU/Evo-1/tree/main) - Tao Lin et al.
+- [VLA-Adapter](https://github.com/OpenHelix-Team/VLA-Adapter) - Yihao Wang et al.
+- [OpenVLA-OFT](https://github.com/moojink/openvla-oft) - Moo Jin Kim et al.
+- [GR00T N1.x](https://github.com/NVIDIA/Isaac-GR00T) - NVIDIA Isaac.
 
 Behavioural evaluation is built on:
 

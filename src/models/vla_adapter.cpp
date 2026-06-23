@@ -235,7 +235,7 @@ std::unique_ptr<ModelArchBase> vla_adapter_create(const std::string& mmproj_path
                                                   const std::string& ckpt_path,
                                                   const std::string& ) {
     if (!mmproj_path.empty())
-        std::printf("vla(vla_adapter): note — mmproj '%s' ignored (vision baked into combined GGUF)\n", mmproj_path.c_str());
+        std::printf("vla(vla_adapter): note - mmproj '%s' ignored (vision baked into combined GGUF)\n", mmproj_path.c_str());
     auto m = std::make_unique<VlaAdapterModelArch>();
     m->mt = std::getenv("VLA_ADAPTER_F32_WEIGHTS") ? GGML_TYPE_F32 : GGML_TYPE_BF16;
 
@@ -351,7 +351,7 @@ std::unique_ptr<ModelArchBase> vla_adapter_create(const std::string& mmproj_path
         if(bytes.empty()||bytes.size()!=ggml_nbytes(t)){ std::fprintf(stderr,"vla(vla_adapter): load %s (%zu vs %zu)\n",ggml_get_name(t),bytes.size(),ggml_nbytes(t)); return nullptr; }
         ggml_backend_tensor_set(t,bytes.data(),0,bytes.size());
     }
-    std::printf("vla(vla_adapter): weights resident %.2f GiB (%s) — DINOv2+SigLIP towers + Qwen2.5-0.5B + Bridge head\n",
+    std::printf("vla(vla_adapter): weights resident %.2f GiB (%s) - DINOv2+SigLIP towers + Qwen2.5-0.5B + Bridge head\n",
                 ggml_backend_buffer_get_size(m->weight_buf)/(1024.0*1024.0*1024.0), m->mt==GGML_TYPE_F32?"F32":"BF16");
 
     m->cfg.n_suffix = m->chunk; m->cfg.max_action_dim = m->action_dim;

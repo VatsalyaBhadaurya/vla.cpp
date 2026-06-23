@@ -174,7 +174,7 @@ class AlohaGr00tN16Client:
 
     def predict_chunk(self, front_rgb: np.ndarray, wrist_rgb: np.ndarray,
                       left_state: np.ndarray, task: str) -> np.ndarray:
-        """Returns (ACTION_HORIZON, JOINT_DOF) float32 — full un-normalised chunk."""
+        """Returns (ACTION_HORIZON, JOINT_DOF) float32 - full un-normalised chunk."""
         return self._predict_chunk(front_rgb, wrist_rgb, left_state, task)
 
     def _predict_chunk(self, front_rgb, wrist_rgb, left_state, task):
@@ -537,7 +537,7 @@ class AlohaInferenceNode(Node):
         """
         if not self._async_ready.wait(timeout=timeout):
             self.log.warning(
-                f"async prefetch timed out after {timeout:.1f}s — "
+                f"async prefetch timed out after {timeout:.1f}s - "
                 "next call will re-trigger synchronously"
             )
             self._async_cached = None

@@ -110,7 +110,7 @@ def run_repl(args, sock):
         pending_images.append(load_jpeg(args.image))
         print(f"(loaded image {args.image} for the next turn)")
 
-    print("vlm chat — commands: /image <path>, /system <text>, /clear, /quit\n")
+    print("vlm chat - commands: /image <path>, /system <text>, /clear, /quit\n")
     rid = 0
     while True:
         try:

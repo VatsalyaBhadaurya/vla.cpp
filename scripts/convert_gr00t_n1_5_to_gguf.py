@@ -302,7 +302,7 @@ def main() -> int:
     writer.write_kv_data_to_file()
     writer.write_tensors_to_file()
     writer.close()
-    print(f"done. {out} ({out.stat().st_size / (1024*1024):.1f} MiB)  — combined GGUF (Eagle-2.5-VL + action head + cfg + metadata.json)")
+    print(f"done. {out} ({out.stat().st_size / (1024*1024):.1f} MiB)  - combined GGUF (Eagle-2.5-VL + action head + cfg + metadata.json)")
 
     if is_lerobot:
         stats_out = (args.stats_out or out.parent / "dataset_statistics.json").resolve()
